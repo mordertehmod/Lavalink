@@ -70,8 +70,8 @@ fun AudioTrack.toInfo(): TrackInfo {
         this.info.title,
         this.info.uri,
         this.sourceManager.sourceName,
-        this.info.artworkUrl,
-        this.info.isrc
+        null, // TODO: implement artworkUrl
+        null // TODO: implement isrc
     )
 }
 
@@ -164,6 +164,8 @@ fun AudioTrackEndReason.toLavalink() = when (this) {
     AudioTrackEndReason.STOPPED -> Message.EmittedEvent.TrackEndEvent.AudioTrackEndReason.STOPPED
     AudioTrackEndReason.REPLACED -> Message.EmittedEvent.TrackEndEvent.AudioTrackEndReason.REPLACED
     AudioTrackEndReason.CLEANUP -> Message.EmittedEvent.TrackEndEvent.AudioTrackEndReason.CLEANUP
+    AudioTrackEndReason.FINISHED_GAPLESS -> Message.EmittedEvent.TrackEndEvent.AudioTrackEndReason.FINISHED
+    AudioTrackEndReason.LOAD_FAILED_GAPLESS -> Message.EmittedEvent.TrackEndEvent.AudioTrackEndReason.LOAD_FAILED
 }
 
 fun LoadResult.Companion.loadFailed(exception: FriendlyException) =

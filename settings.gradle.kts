@@ -36,11 +36,12 @@ fun VersionCatalogBuilder.spring() {
 }
 
 fun VersionCatalogBuilder.voice() {
-    version("lavaplayer", "2.2.3")
+    version("lavaplayer-devoxin", "original-SNAPSHOT")
+    version("lavaplayer-arbjerg", "2.2.3")
     version("koe", "2.1.1")
 
-    library("lavaplayer", "dev.arbjerg", "lavaplayer").versionRef("lavaplayer")
-    library("lavaplayer-ip-rotator", "dev.arbjerg", "lavaplayer-ext-youtube-rotator").versionRef("lavaplayer")
+    library("lavaplayer", "com.github.devoxin.lavaplayer", "lavaplayer").versionRef("lavaplayer-devoxin")
+    library("lavaplayer-ip-rotator", "dev.arbjerg", "lavaplayer-ext-youtube-rotator").versionRef("lavaplayer-arbjerg")
     library("lavadsp", "dev.arbjerg", "lavadsp").version("0.7.8")
 
     library("koe", "moe.kyokobot.koe", "core").versionRef("koe")

@@ -34,6 +34,9 @@ class ServerConfig {
     var bufferDurationMs: Int? = null
     var frameBufferDurationMs: Int? = null
     var opusEncodingQuality: Int? = null
+    var opusBitrate: Int? = null
+    var opusVbr: Boolean? = null
+    var opusVbrConstrained: Boolean? = null
     var resamplingQuality: ResamplingQuality? = null
     var trackStuckThresholdMs: Long? = null
     var useSeekGhosting: Boolean? = null

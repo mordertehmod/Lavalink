@@ -52,7 +52,9 @@ class AudioPlayerConfiguration {
         mediaContainerProbes: Collection<MediaContainerProbe>
     ): AudioPlayerManager {
         serverConfig.timeouts?.let {
-            HttpClientTools.setDefaultRequestTimeout(it.connectTimeoutMs, it.connectionRequestTimeoutMs, it.socketTimeoutMs)
+            // TODO: Fix timeout configuration for Devoxin's lavaplayer
+            // HttpClientTools.setDefaultRequestTimeout(it.connectTimeoutMs, it.connectionRequestTimeoutMs, it.socketTimeoutMs)
+            log.warn("Timeout configuration is currently disabled due to lavaplayer fork API changes")
         }
 
         val audioPlayerManager = DefaultAudioPlayerManager()
@@ -87,6 +89,32 @@ class AudioPlayerConfiguration {
                 val qualitySetting = opusQuality.takeIf { it in 0..10 } ?: defaultOpusEncodingQuality
                 log.debug("Setting opusEncodingQuality to $qualitySetting")
                 it.opusEncodingQuality = qualitySetting
+            }
+
+            if (serverConfig.opusBitrate != null || serverConfig.opusVbr != null || serverConfig.opusVbrConstrained != null) {
+                try {
+                    val opusConfig = com.sedmelluq.discord.lavaplayer.player.OpusEncoderConfiguration()
+                    
+                    serverConfig.opusBitrate?.let { bitrate ->
+                        log.info("Setting Opus bitrate to $bitrate bps")
+                        opusConfig.setBitrate(bitrate)
+                    }
+                    
+                    serverConfig.opusVbr?.let { vbr ->
+                        log.debug("Setting Opus VBR to $vbr")
+                        opusConfig.setVbr(vbr)
+                    }
+                    
+                    serverConfig.opusVbrConstrained?.let { constrained ->
+                        log.debug("Setting Opus VBR constraint to $constrained")
+                        opusConfig.setVbrConstraint(constrained)
+                    }
+                    
+                    it.setOpusEncoderConfiguration(opusConfig)
+                    log.info("Successfully applied custom Opus encoder configuration")
+                } catch (e: Exception) {
+                    log.error("Failed to apply Opus encoder configuration", e)
+                }
             }
 
             serverConfig.resamplingQuality?.let { resamplingQuality ->

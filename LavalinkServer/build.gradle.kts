@@ -73,7 +73,9 @@ dependencies {
     }
 
     implementation(libs.lavaplayer)
-    implementation(libs.lavaplayer.ip.rotator)
+    implementation(libs.lavaplayer.ip.rotator) {
+        exclude(group = "dev.arbjerg", module = "lavaplayer")
+    }
 
     implementation(libs.lavadsp)
     implementation(libs.kotlin.reflect)
